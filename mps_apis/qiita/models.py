@@ -14,8 +14,8 @@ class Article(models.Model):
     """
     article_title        = models.CharField(max_length=50, default=None, blank=True, null=True)
     url          = models.URLField(default=None, blank=True, null=True)
-    # created_at   = models.DateTimeField(auto_now=False, auto_now_add=False)
-    # updated_at   = models.DateTimeField(auto_now=False, auto_now_add=False)
+    created_at   = models.DateTimeField(auto_now=False, auto_now_add=False)
+    updated_at   = models.DateTimeField(auto_now=False, auto_now_add=False)
     article_body = models.TextField(max_length=100000)
     article_token = models.ForeignKey(AccessToken, default=None, blank=True, null=True, related_name='article_token')
 
