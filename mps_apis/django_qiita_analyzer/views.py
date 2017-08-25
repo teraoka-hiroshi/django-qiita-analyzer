@@ -40,7 +40,10 @@ class RedirectView(View):
             return self.get_accesstoken(param_value)
 
     def get_accesstoken(self, code):
-        """取得した'code'を使ってアクセストークン取得"""
+        """
+        取得した'code'を使ってアクセストークン取得
+        requestsライブラリでPOSTしている
+        """
         data = {
             "client_id": credentials.client_id,
             "client_secret": credentials.client_secret,
@@ -50,7 +53,6 @@ class RedirectView(View):
         req = requests.post("https://qiita.com/api/v2/access_tokens",
                             json.dumps(data).encode("utf-8"),
                             headers={"Content-Type": "application/json"})
-        print("req.json", req.json())
         # urllib.request.Requestを使ったPOSTのやり方<<jsonの扱いが色々しないといけない>>
         # json_data = json.dumps(data).encode("utf-8")
         # url = "https://qiita.com/api/v2/access_tokens"
@@ -69,10 +71,9 @@ class RedirectView(View):
         #     print("json_body", json_body['token'])
         #     token = json_body['token']
         for key, value in req.json().items():
-            print("item", key, value)
+            # print("item", key, value)
             if "token" in key:
                 # query_paramが指定されている場合の処理
-                print("item", value)
                 token = value
                 access_token = AccessToken.objects.create(token=token)
                 access_token.save()

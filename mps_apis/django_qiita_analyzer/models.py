@@ -1,12 +1,25 @@
 from django.db import models
+from django.utils import timezone
 
+class TokenManager(models.Manager):
+    """最新のAccessTokenを取得"""
+    def get_latest_token(self):
+        return self.order_by('created_time').first()
 
 class AccessToken(models.Model):
+    """
+    Qiita_AccessTokenを格納
+    """
+    token      = models.CharField(max_length=50)
+    created_time = models.DateTimeField(auto_now=True)  # 登録日時
 
-    token = models.CharField(max_length=50)
+    objects = models.Manager()
+    # 呼び出し：AccessToken.latest_token.get_latest_token()
+    latest_token = TokenManager()
 
     def __str__(self):
         return self.token
+
 
 class Article(models.Model):
     """
