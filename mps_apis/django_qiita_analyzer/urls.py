@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from qiita.views import UpdatesView, RedirectView
+from django_qiita_analyzer.views import UpdatesView, RedirectView
 
 
 urlpatterns = [

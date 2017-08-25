@@ -16,10 +16,10 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.contrib import admin
 
-import qiita.urls
+import django_qiita_analyzer.urls
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^qiita/', include(qiita.urls, namespace='qiita')),
+    url(r'^django_qiita_analyzer/', include(django_qiita_analyzer.urls, namespace='django_qiita_analyzer')),
 ]
