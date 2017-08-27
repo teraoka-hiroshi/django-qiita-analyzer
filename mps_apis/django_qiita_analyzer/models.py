@@ -21,6 +21,11 @@ class AccessToken(models.Model):
         return self.token
 
 
+class ArticleManager(models.Manager):
+    """重複記事を探す"""
+    def check_overlap(self):
+        return self.order_by('created_time').first()
+
 class Article(models.Model):
     """
     Qiitaの記事を格納するクラス
