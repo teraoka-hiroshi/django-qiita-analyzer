@@ -7,9 +7,9 @@ setup(
     author="Hiroshi Teraoka",
     description=("A module for users to retrieve stories from qiita using oauth"),
     license = "MIT",
-    url='https://github.com/aporo4000/django-qiita-analyzer/tree/master',
+    url='https://github.com/aporo4000/django-qiita-analyzer',
     packages=['django-qiita-analyzer'],
     package_data={
-        'nbupload': ['templates/django_qiita_analyzer/*.html'],
+        'django-qiita-analyzer': ['templates/django_qiita_analyzer/*.html'],
     },
 )
