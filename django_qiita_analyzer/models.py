@@ -22,13 +22,13 @@ class AccessToken(models.Model):
 
 
 class ArticleManager(models.Manager):
-    """重複記事を探す"""
+    """最新の記事取得"""
     def check_overlap(self):
         return self.order_by('created_time').first()
 
-class Article(models.Model):
+class OauthArticle(models.Model):
     """
-    Qiitaの記事を格納するクラス
+    Oauthを使ってQiitaの記事を格納するクラス
     """
     article_title        = models.CharField(max_length=50, default=None, blank=True, null=True)
     url          = models.URLField(default=None, blank=True, null=True)
@@ -40,3 +40,58 @@ class Article(models.Model):
     def __str__(self):
         return self.article_title
 
+
+class MachineLearningArticle(models.Model):
+    """
+    "機械学習"の内容が強いQiitaの記事を格納するクラス
+    """
+    article_title        = models.CharField(max_length=50, default=None, blank=True, null=True)
+    url          = models.URLField(default=None, blank=True, null=True)
+    created_at   = models.DateTimeField(auto_now=False, auto_now_add=False)
+    updated_at   = models.DateTimeField(auto_now=False, auto_now_add=False)
+    article_body = models.TextField(max_length=100000)
+
+    def __str__(self):
+        return self.article_title
+
+
+class NLPArticle(models.Model):
+    """
+    "自然言語処理"の内容が強いQiitaの記事を格納するクラス
+    """
+    article_title        = models.CharField(max_length=50, default=None, blank=True, null=True)
+    url          = models.URLField(default=None, blank=True, null=True)
+    created_at   = models.DateTimeField(auto_now=False, auto_now_add=False)
+    updated_at   = models.DateTimeField(auto_now=False, auto_now_add=False)
+    article_body = models.TextField(max_length=100000)
+
+    def __str__(self):
+        return self.article_title
+
+
+class ImageRecognitionArticle(models.Model):
+    """
+    "画像認識"の内容が強いQiitaの記事を格納するクラス
+    """
+    article_title        = models.CharField(max_length=50, default=None, blank=True, null=True)
+    url          = models.URLField(default=None, blank=True, null=True)
+    created_at   = models.DateTimeField(auto_now=False, auto_now_add=False)
+    updated_at   = models.DateTimeField(auto_now=False, auto_now_add=False)
+    article_body = models.TextField(max_length=100000)
+
+    def __str__(self):
+        return self.article_title
+
+
+class DepthLearningArticle(models.Model):
+    """
+    "深層学習"の内容が強いQiitaの記事を格納するクラス
+    """
+    article_title        = models.CharField(max_length=50, default=None, blank=True, null=True)
+    url          = models.URLField(default=None, blank=True, null=True)
+    created_at   = models.DateTimeField(auto_now=False, auto_now_add=False)
+    updated_at   = models.DateTimeField(auto_now=False, auto_now_add=False)
+    article_body = models.TextField(max_length=100000)
+
+    def __str__(self):
+        return self.article_title
