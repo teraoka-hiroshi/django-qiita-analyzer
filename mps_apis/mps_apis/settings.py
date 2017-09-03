@@ -120,3 +120,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+HOME_URL='django_qiita_analyzer/data_update.html'
+REDIRECT_URL='django_qiita_analyzer/redirect.html'

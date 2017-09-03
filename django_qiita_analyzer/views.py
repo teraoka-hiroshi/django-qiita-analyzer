@@ -1,4 +1,7 @@
 import json
+import os, sys
+client_id = os.environ['CLIENT_ID']
+client_secret = os.environ['CLIENT_SECRET']
 
 import requests
 from django.shortcuts import render, render_to_response
@@ -6,43 +9,44 @@ from django.views import View
 from django_qiita_analyzer.models import AccessToken
 
 # credentialsファイルにclient_idとclient_secret用意
-from . import credentials
+# from . import credentials
+# TemplateViewを継承
+from django.views.generic.base import TemplateView
+from django.conf import settings
 
+# class UpdatesView(View):
+class UpdatesView(TemplateView):
+    # template名
+    template_name = settings.HOME_URL
 
-class UpdatesView(View):
-
-    def get(self, request):
+    def get(self, request, **kwargs):
         """
         Qiita API
         GET /api/v2/oauth/authorize (client_id,scope)アクセス『許可』へ
         client_id: credentials.py
         scope: credentials.py
         """
-        qiita_client_id = credentials.client_id
+        qiita_client_id = client_id
         scope = "read_qiita"
         qiita_api_url = "https://qiita.com/api/v2/oauth/authorize?"+"client_id="+qiita_client_id+"&scope="+scope
-        return render(request, 'django_qiita_analyzer/data_update.html', {
+        context = {
             'qiita_api_url': qiita_api_url
-        })
+        }
+        return self.render_to_response(context)
 
 
-class RedirectView(View):
+class RedirectView(TemplateView):
+    # template名
+    template_name = settings.REDIRECT_URL
 
-    def get(self, request):
+    def get(self, request, **kwargs):
         """QiitaのOAUTH使ってリダイレクトされた情報取得"""
         if "code" in request.GET:
             # リダイレクトされた情報の中にある"code"を取得
-            param_value = request.GET.get("code")
-            return self.get_accesstoken(param_value)
-
-    def get_accesstoken(self, code):
-        """
-        取得した'code'を使ってアクセストークン取得
-        requestsライブラリでPOSTしている
-        """
+            code = request.GET.get("code")
         data = {
-            "client_id": credentials.client_id,
-            "client_secret": credentials.client_secret,
+            "client_id": client_id,
+            "client_secret": client_secret,
             "code": code
         }
         req = requests.post("https://qiita.com/api/v2/access_tokens",
@@ -55,6 +59,7 @@ class RedirectView(View):
                 token = value
                 access_token = AccessToken.objects.create(token=token)
                 access_token.save()
-        return render_to_response('django_qiita_analyzer/redirect.html', {
+        context = {
             'token': token
-        })
+        }
+        return self.render_to_response(context)

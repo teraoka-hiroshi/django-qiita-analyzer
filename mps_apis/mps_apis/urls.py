@@ -16,10 +16,17 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.contrib import admin
 
-import django_qiita_analyzer.urls
-
+# import django_qiita_analyzer.urls
+"""
+直接django_qiita_analyzer.viewのクラスをここで指定して
+htmlを設定しておく
+"""
+from django_qiita_analyzer.views import UpdatesView, RedirectView
+from django.conf import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^django_qiita_analyzer/', include(django_qiita_analyzer.urls, namespace='django_qiita_analyzer')),
+    url(r'^django_qiita_analyzer/$', UpdatesView.as_view(template_name=settings.HOME_URL), name='data_update'),
+    url(r'^django_qiita_analyzer/redirect/$', RedirectView.as_view(template_name=settings.REDIRECT_URL), name='redirect'),
+
 ]
