@@ -1,6 +1,6 @@
 # django-qiita-analyzer
 
-# qiita(https://qiita.com/settings/applications/) 
+### qiita(https://qiita.com/settings/applications/) 
 #      After registering the application, make the following creation
 
 
@@ -28,16 +28,16 @@ $ python link_setting.py
 
 
 # Add to settings.py and urls.py of created application
-(sample_application/settings.py)
+(sample_application/settings.py)  
 HOME_URL='sample_application/home.html'
 REDIRECT_URL='sample_application/redirect.html'
 
-(sample_application/urls.py)
-from django_qiita_analyzer.views import UpdatesView, RedirectView
-urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    # Create an html file and list it here template_name=' '
-    url(r'^django_qiita_analyzer/$', UpdatesView.as_view(template_name=HOME_URL), name='data_update'),
+(sample_application/urls.py)  
+from django_qiita_analyzer.views import UpdatesView, RedirectView  
+urlpatterns = [  
+    url(r'^admin/', admin.site.urls),  
+    # Create an html file and list it here template_name=' '  
+    url(r'^django_qiita_analyzer/$', UpdatesView.as_view(template_name=HOME_URL), name='data_update'),  
     url(r'^django_qiita_analyzer/redirect/$', RedirectView.as_view(template_name=REDIRECT_URL), name='redirect'),
 
 ]
