@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
-
+client_id = os.environ['CLIENT_ID']
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -121,6 +121,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
+QIITA_API_URL="https://qiita.com/api/v2/oauth/authorize?client_id=%s&scope=%s" % (client_id, "read_qiita")
 HOME_URL='django_qiita_analyzer/data_update.html'
 REDIRECT_URL='django_qiita_analyzer/redirect.html'
