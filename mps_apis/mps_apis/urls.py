@@ -21,7 +21,8 @@ from django.contrib import admin
 直接django_qiita_analyzer.viewのクラスをここで指定して
 htmlを設定しておく
 """
-from django_qiita_analyzer.views import UpdatesView, RedirectView
+from django_qiita_analyzer.templatetags.qiita_tags import UpdatesView
+from django_qiita_analyzer.views import RedirectView
 from django.conf import settings
 
 urlpatterns = [
