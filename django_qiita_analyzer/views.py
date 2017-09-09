@@ -18,6 +18,26 @@ from django.views.generic.base import TemplateView
 from django.conf import settings
 
 
+from django.views import View
+from django.shortcuts import render
+
+# sample_application(不要)
+class sample_index(View):
+    """home"""
+    def get(self, request):
+        input_class = self
+        content = "GET Qiita API"
+        return render(request, 'django_qiita_analyzer/home.html', {
+            'input_class': input_class,
+            'content': content,
+        })
+
+# sample_application(不要)
+class sample_redirect(View):
+    """Redirect destination"""
+    def get(self, request):
+        return render(request, 'django_qiita_analyzer/redirect.html', {})
+
 
 class RedirectView(TemplateView):
     # template名
