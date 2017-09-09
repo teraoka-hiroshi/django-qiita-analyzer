@@ -68,17 +68,17 @@ sample_application/views.py
 from django.views import View  
 from django.shortcuts import render  
 class sample_index(View):  
-    def get(self, request):  
-        input_class = self  
-        content = "GET Qiita API"  
-        return render(request, 'sample_application/home.html', {  
-            'input_class': input_class,  
-            'content': content,  
+&nbsp; &nbsp; def get(self, request):  
+&nbsp; &nbsp; &nbsp; &nbsp; input_class = self  
+&nbsp; &nbsp; &nbsp; &nbsp; content = "GET Qiita API"  
+&nbsp; &nbsp; &nbsp; &nbsp; return render(request, 'sample_application/home.html', {  
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  'input_class': input_class,  
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  'content': content,  
         })   
 class sample_redirect(View):  
-    """Redirect destination"""  
-    def get(self, request):  
-        return render(request, 'sample_application/redirect.html', {})  
+&nbsp; &nbsp; """Redirect destination"""  
+&nbsp; &nbsp; def get(self, request):  
+&nbsp; &nbsp; &nbsp; &nbsp; return render(request, 'sample_application/redirect.html', {})  
         
     
     
@@ -107,13 +107,13 @@ Redirect to the 「RedirectView」 class of the module
 >(urls.py) # sample code  
 from django.conf.urls import url  
 from django.contrib import admin  
-from sample_application.views import sample_index 
-from django_qiita_analyzer.views import RedirectView
-from django.conf import settings
+from sample_application.views import sample_index   
+from django_qiita_analyzer.views import RedirectView  
+from django.conf import settings  
 urlpatterns = [  
-    url(r'^admin/', admin.site.urls),  
-    url(r'^(WEB home URL)/$', sample_index.as_view(), name='home'),  
-    url(r'^(WEB redirect URL)/$', RedirectView.as_view(template_name=settings.REDIRECT_TEMPLATE_HTML), name='home'),  
+&nbsp; &nbsp; url(r'^admin/', admin.site.urls),  
+&nbsp; &nbsp; url(r'^(WEB home URL)/$', sample_index.as_view(), name='home'),  
+&nbsp; &nbsp; url(r'^(WEB redirect URL)/$', RedirectView.as_view(template_name=settings.REDIRECT_TEMPLATE_HTML), name='home'),  
 ]  
 
  
