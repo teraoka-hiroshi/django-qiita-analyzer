@@ -122,5 +122,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 QIITA_API_URL="https://qiita.com/api/v2/oauth/authorize?client_id=%s&scope=%s" % (client_id, "read_qiita")
-HOME_URL='django_qiita_analyzer/data_update.html'
-REDIRECT_URL='django_qiita_analyzer/redirect.html'
+REDIRECT_TEMPLATE_HTML='django_qiita_analyzer/redirect.html'

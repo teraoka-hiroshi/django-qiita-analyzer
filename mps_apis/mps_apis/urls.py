@@ -13,21 +13,20 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url,include
+from django.conf.urls import url, include
 from django.contrib import admin
 
-# import django_qiita_analyzer.urls
+# from .views import sample_index(サンプルで作成するhomeクラス)
 """
-直接django_qiita_analyzer.viewのクラスをここで指定して
-htmlを設定しておく
+モジュールのdjango_qiita_analyzer.viewのクラスをここで指定する
+settings.pyにリダイレクトするHTML名を指定しておき呼び出す
 """
-from django_qiita_analyzer.templatetags.qiita_tags import UpdatesView
 from django_qiita_analyzer.views import RedirectView
 from django.conf import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^django_qiita_analyzer/$', UpdatesView.as_view(template_name=settings.HOME_URL), name='data_update'),
-    url(r'^django_qiita_analyzer/redirect/$', RedirectView.as_view(template_name=settings.REDIRECT_URL), name='redirect'),
+    # url(r'^django_qiita_analyzer/$', sample_index.as_view(), name='home'),
+    url(r'^django_qiita_analyzer/redirect/$', RedirectView.as_view(template_name=settings.REDIRECT_HTML), name='redirect'),
 
 ]

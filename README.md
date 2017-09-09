@@ -1,20 +1,24 @@
-# django-qiita-analyzer(AccessToken)
+# Description
+### This module uses Qiita_API to obtain access token from OAUTH authentication
 
-## pip install
->$ sudo apt-get install python3-pip  
-$ pip install -r requirements.txt 
+# pip install
+>$ sudo apt-get install python3-pip 
+
 
 # git clone and setup.py install
 >$ cd sample_project  
 $ git clone git@github.com:aporo4000/django-qiita-analyzer.git  
 $ cd django-qiita-analyzer  
+$ pip install -r requirements.txt   
 $ python setup.py install   
 
- Finished!   
+ Finished!  
+  
+ 
 
 # Pass through the module's path
 (vargrant path)   
->$ ln -fs /vagrant/django-qiita-analyzer/django_qiita_analyzer /vagrant/venv/lib/python3.5/site-packages'
+>$ ln -fs /vagrant/django-qiita-analyzer/django_qiita_analyzer /vagrant/venv/lib/python3.5/site-packages
 
 
 
@@ -31,14 +35,14 @@ get client_secret
 
 # Add to PATH (~/.bashrc) 
 >export DJANGO_QIITA_ANALYZER="~/(create project name)"  
-export APPLICATION_NAME='(create applicaiton name)'  
-export CLIENT_ID="(get client_id)"  
-export CLIENT_SECRET="(get client_secret)" 
+export CLIENT_ID="get client_id"  
+export CLIENT_SECRET="get client_secret"  
   
 >$ source .bashrc  
 
 
-### Add to (project_name/settings.py)
+# Add to application 
+(sample_project/settings.py)
 >ALLOWED_HOSTS = ["*"]  
 INSTALLED_APPS = [  
     'django.contrib.admin',  
@@ -50,86 +54,69 @@ INSTALLED_APPS = [
     'django_qiita_analyzer', # <-- Add   
     '(create applicaiton name)', # <-- Add   
     ]
-
-
-# Create sample application template
-(PATH)sample_application/templates/sample_application/home.html  
-(home.html)  # To write  
->{% load qiita_tags %}      
-{% output_button qiita_api_url %}   
- 
-(PATH)sample_application/templates/sample_application/redirect.html  
-(redirect.html)  # To write  
->\<p>{{ token }}\</p>  
-
-
-
+    
 # Write to the settings.py of the sample project
-(sample_application/settings.py)    
->HOME_URL='sample_application/home.html'
-REDIRECT_URL='sample_application/redirect.html'
+(sample_project/settings.py)    
+>client_id = os.environ['CLIENT_ID']  
+QIITA_API_URL="https://qiita.com/api/v2/oauth/authorize?client_id=%s&scope=%s" % (client_id, "read_qiita")  
+REDIRECT_TEMPLATE_HTML='sample_application/redirect.html'
 
 
-# Write to the urls.py of the sample project
-(sample_application/urls.py)  
->from django.conf.urls import url,include  
-from django.contrib import admin
-from django-qiita-analyzer.django_qiita_analyzer.views import UpdatesView, RedirectView 
+# Create Class in Views.py of sample_application
+sample_application/views.py    
+>(views.py) # sample code     
+from django.views import View  
+from django.shortcuts import render  
+class sample_index(View):  
+    def get(self, request):  
+        input_class = self  
+        content = "GET Qiita API"  
+        return render(request, 'sample_application/home.html', {  
+            'input_class': input_class,  
+            'content': content,  
+        })   
+class sample_redirect(View):  
+    """Redirect destination"""  
+    def get(self, request):  
+        return render(request, 'sample_application/redirect.html', {})  
+        
+    
+    
+# Create sample application template
+sample_application/templates/sample_application/home.html  
+>(home.html)  # sample code  
+  ・  
+  ・  
+{% load qiita_tags %}      
+{% output_start_button input_class content %}  
+  ・  
+  ・  
+ 
+sample_application/templates/sample_application/redirect.html  
+>(redirect.html)  # sample code  
+  ・  
+  ・     
+>\<a href="(qiita application home screen URL)">Return to home\</a>    
+    ・  
+    ・  
+
+    
+# Create urls.py of sample_project
+sample_project/sample_project/urls.py   
+Redirect to the 「RedirectView」 class of the module     
+>(urls.py) # sample code  
+from django.conf.urls import url  
+from django.contrib import admin  
+from sample_application.views import sample_index 
+from django_qiita_analyzer.views import RedirectView
 from django.conf import settings
- 
->urlpatterns = [  
+urlpatterns = [  
     url(r'^admin/', admin.site.urls),  
-    # Create an html file and list it here template_name=' '  
-    url(r'^django_qiita_analyzer/$', UpdatesView.as_view(template_name=settings.HOME_URL), name='data_update'),  
-    url(r'^django_qiita_analyzer/redirect/$', RedirectView.as_view(template_name=settings.REDIRECT_URL), name='redirect'),  
-]
+    url(r'^(WEB home URL)/$', sample_index.as_view(), name='home'),  
+    url(r'^(WEB redirect URL)/$', RedirectView.as_view(template_name=settings.REDIRECT_TEMPLATE_HTML), name='home'),  
+]  
+
  
-
-
-# Write to models.py of sample application
-(sample_application/models.py)  
->from django.db import models  
-from django.utils import timezone  
-  
->class TokenManager(models.Manager):  
-    """最新のAccessTokenを取得"""  
-    def get_latest_token(self):  
-        return self.order_by('created_time').first()  
-
->class AccessToken(models.Model):  
-    """  
-    Qiita_AccessTokenを格納  
-    """  
-    token      = models.CharField(max_length=50)  
-    created_time = models.DateTimeField(auto_now=True)  # 登録日時  
-   objects = models.Manager()  
-    # 呼び出し：AccessToken.latest_token.get_latest_token()  
-    latest_token = TokenManager()  
-   def __str__(self):  
-        return self.token  
-
->class ArticleManager(models.Manager):  
-    """最新の記事取得"""  
-    def check_overlap(self):  
-        return self.order_by('created_time').first()  
-
->class OauthArticle(models.Model):  
-    """  
-    Oauthを使ってQiitaの記事を格納するクラス  
-    """  
-    article_title        = models.CharField(max_length=50, default=None, blank=True, null=True)  
-    url          = models.URLField(default=None, blank=True, null=True)  
-    created_at   = models.DateTimeField(auto_now=False, auto_now_add=False)  
-    updated_at   = models.DateTimeField(auto_now=False, auto_now_add=False)  
-    article_body = models.TextField(max_length=100000)  
-    article_token = models.ForeignKey(AccessToken, default=None, blank=True, null=True, related_name='article_token')  
-   def __str__(self):  
-        return self.article_title  
-
-
-# Write to admin.py of sample project
->from .models import  AccessToken  
-admin.site.register(AccessToken)
 
 # make and migrate and create user
 >$ ./manage.py makemigrations  
@@ -139,6 +126,10 @@ $ ./manage.py createsuperuser
 # runserver
 >$ ./manage.py runserver 0.0.0.0:8000  
 (admin_URL) http://192.168.33.10:8000/admin/  
-(Execution_URL) http://192.168.33.10:8000/django_qiita_analyzer/
+(Execution_URL) http://192.168.33.10:8000/(home url)/  
 
+
+When you press the content name link on the home screen,  
+ you go to Qiita's OAUTH authentication, if you allow it,  
+  the access token is acquired and saved in the DB.
 

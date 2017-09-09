@@ -21,7 +21,7 @@ from django.conf import settings
 
 class RedirectView(TemplateView):
     # template名
-    template_name = settings.REDIRECT_URL
+    template_name = settings.REDIRECT_TEMPLATE_HTML
 
     def get(self, request, **kwargs):
         """QiitaのOAUTH使ってリダイレクトされた情報取得"""
