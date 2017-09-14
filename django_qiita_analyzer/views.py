@@ -1,11 +1,8 @@
 import json
 import os, sys
 import importlib  # module名を文字列で指定
-# application_name = os.environ['APPLICATION_NAME']  # sample_application_name
 client_id = os.environ['CLIENT_ID']
 client_secret = os.environ['CLIENT_SECRET']
-
-# AccessToken = importlib.import_module(application_name).models.AccessToken
 
 import requests
 from django.shortcuts import render, render_to_response
